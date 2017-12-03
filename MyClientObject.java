@@ -43,7 +43,7 @@ public class MyClientObject{
          String msg = JOptionPane.showInputDialog(null, "What is your message?");
          System.out.println("Message before: " + msg);
          AsymmetricCryptography ac = new AsymmetricCryptography();
-		   String encrypted_msg = ac.encryptText(msg, serverKey);
+		   byte[] encrypted_msg = ac.encryptText(msg, serverKey);
          System.out.println("Message after: " + encrypted_msg);
          
          //send msg
@@ -51,9 +51,9 @@ public class MyClientObject{
          out.flush();
          
          //read encrypted message from server
-         String server_encrypted_msg = (String) in.readObject();
+         byte[] server_encrypted_msg = (byte[]) in.readObject();
          System.out.println("Message recieved from server: " + server_encrypted_msg);
-         String decrypted_msg = ac.decryptText(server_encrypted_msg, privateKey);
+         String decrypted_msg = new String(ac.decryptText(server_encrypted_msg, privateKey), "UTF-8");
          System.out.println("Decrypted Message: " + decrypted_msg);
 
       
@@ -86,6 +86,9 @@ public class MyClientObject{
       }
       catch(BadPaddingException bpe){
          System.out.println("Say something");
+      }
+      catch(Exception e){
+         System.out.println("Unknown Exception");
       }
    }
 }// end MyClient

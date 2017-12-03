@@ -75,15 +75,15 @@ public class MyServerObject {
             
             //read encrypted message from client
                AsymmetricCryptography ac = new AsymmetricCryptography();
-               String client_encrypted_msg = (String) in.readObject();
+               byte[] client_encrypted_msg = (byte[]) in.readObject();
                System.out.println("Message recieved from client: " + client_encrypted_msg);
-               String decrypted_msg = ac.decryptText(client_encrypted_msg, privateKey);
+               String decrypted_msg = new String(ac.decryptText(client_encrypted_msg, privateKey), "UTF-8");
                System.out.println("Decrypted Message: " + decrypted_msg);
             
             //ask what you want to send
                String msg = JOptionPane.showInputDialog(null, "What is your message?");
                System.out.println("Message before: " + msg); 
-               String encrypted_msg = ac.encryptText(msg, clientKey);
+               byte[] encrypted_msg = ac.encryptText(msg, clientKey);
                System.out.println("Message after: " + encrypted_msg);
             
             //send msg
@@ -109,7 +109,7 @@ public class MyServerObject {
             ioe.printStackTrace();
          }
          catch(ClassNotFoundException cnfe){
-            
+            System.out.println("class not found error");
          }
          catch(NoSuchAlgorithmException nsae){
             System.out.println("Say something");
@@ -126,6 +126,10 @@ public class MyServerObject {
          catch(BadPaddingException bpe){
             System.out.println("Say something");
          }
+         catch(Exception e){
+         System.out.println("Unknown Exception");
+         }
+         
          
       
       }//end main   

@@ -3,6 +3,7 @@ import java.net.*;
 import java.security.*;
 import javax.swing.*;
 import javax.crypto.*;
+import java.util.*;
 
 
 
@@ -25,11 +26,11 @@ public class tester{
 		PublicKey publicKey = gk.getPublicKey();
 
 		String msg = "Cryptography is fun!";
-		String encrypted_msg = ac.encryptText(msg, publicKey);
-		String decrypted_msg = ac.decryptText(encrypted_msg, privateKey);
+		//String encrypted_msg = ac.encryptText(msg, publicKey);
+		String decrypted_msg = new String(ac.decryptText(ac.encryptText(msg, publicKey), privateKey), "UTF-8");
 		System.out.println("Original Message: " + msg +
-			"\nEncrypted Message: " + encrypted_msg
-			+ "\nDecrypted Message: " + decrypted_msg);
+			"\nEncrypted Message: " + msg
+			+ "\nDecrypted Message: " + decrypted_msg.toString());
    }
 
 }
