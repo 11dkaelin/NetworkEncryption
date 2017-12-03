@@ -66,7 +66,7 @@ public class MyServerObject {
             do{
             //read the clients's public key
                PublicKey clientKey = (PublicKey) in.readObject();
-               System.out.println("Read client key: " + clientKey);
+               System.out.println("Read client key");
                
                
             //write the public key to the client

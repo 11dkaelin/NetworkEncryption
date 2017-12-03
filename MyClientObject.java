@@ -37,7 +37,7 @@ public class MyClientObject{
          
          //read the server's public key
          PublicKey serverKey = (PublicKey) in.readObject();
-         System.out.println("Read server key: " + serverKey);
+         System.out.println("Read server key ");
          
          //ask what you want to send
          String msg = JOptionPane.showInputDialog(null, "What is your message?");
