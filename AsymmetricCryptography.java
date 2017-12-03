@@ -29,7 +29,6 @@ public class AsymmetricCryptography {
 		this.cipher = Cipher.getInstance("RSA");
 	}
 
-	// https://docs.oracle.com/javase/8/docs/api/java/security/spec/PKCS8EncodedKeySpec.html
 	public PrivateKey getPrivate(String filename) throws Exception {
 		byte[] keyBytes = Files.readAllBytes(new File(filename).toPath());
 		PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
@@ -37,7 +36,6 @@ public class AsymmetricCryptography {
 		return kf.generatePrivate(spec);
 	}
 
-	// https://docs.oracle.com/javase/8/docs/api/java/security/spec/X509EncodedKeySpec.html
 	public PublicKey getPublic(String filename) throws Exception {
 		byte[] keyBytes = Files.readAllBytes(new File(filename).toPath());
 		X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
