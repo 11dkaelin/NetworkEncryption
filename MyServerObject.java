@@ -1,15 +1,27 @@
 import java.io.*;
 import java.net.*;
-
+import java.security.*;
+import javax.swing.*;
+import javax.crypto.*;
 
 
 public class MyServerObject {
-
+   private PrivateKey privateKey;
+   private PublicKey publicKey;
    public static void main(String [] args){
       new MyServerObject();
    }
    
    public MyServerObject(){
+      GenerateKeys gk=null;
+      try {
+         gk = new GenerateKeys(1024);
+         gk.createKeys();
+      }catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+         System.err.println(e.getMessage());
+      }
+      privateKey = gk.getPrivateKey();
+      publicKey = gk.getPublicKey();
       try{
          //make connection with server
          ServerSocket ss = new ServerSocket(16789);
@@ -43,34 +55,46 @@ public class MyServerObject {
       }
       
       public void run(){
-         ObjectInputStream ois = null;
-         ObjectOutputStream oos = null;
+         ObjectInputStream in = null;
+         ObjectOutputStream out = null;
          try{
             //open input and Output from the server
-            ois=new ObjectInputStream(cs.getInputStream());
-            oos=new ObjectOutputStream(cs.getOutputStream());
+            in=new ObjectInputStream(cs.getInputStream());
+            out=new ObjectOutputStream(cs.getOutputStream());
             
-
+         
             do{
-            //read from client
-               SalesOrder sales = (SalesOrder) ois.readObject();
-               String salesString1 = sales.toString();
-               System.out.println("Read: " + salesString1);
+            //read the clients's public key
+               PublicKey clientKey = (PublicKey) in.readObject();
+               System.out.println("Read client key: " + clientKey);
+               
+               
+            //write the public key to the client
+               out.writeObject(publicKey);
+               out.flush();
             
-            //do something with it
-               double price =sales.getPrice();
-               price=price + (price * 0.1);
-               sales.setPrice(price);
-               String salesString2 = sales.toString();
-               System.out.println("Edited: " + salesString2);
+            //read encrypted message from client
+               AsymmetricCryptography ac = new AsymmetricCryptography();
+               String client_encrypted_msg = (String) in.readObject();
+               System.out.println("Message recieved from client: " + client_encrypted_msg);
+               String decrypted_msg = ac.decryptText(client_encrypted_msg, privateKey);
+               System.out.println("Decrypted Message: " + decrypted_msg);
             
-            //write to client
-               oos.writeObject(sales);
-               oos.flush();
-            }while(ois!=null);
+            //ask what you want to send
+               String msg = JOptionPane.showInputDialog(null, "What is your message?");
+               System.out.println("Message before: " + msg); 
+               String encrypted_msg = ac.encryptText(msg, clientKey);
+               System.out.println("Message after: " + encrypted_msg);
+            
+            //send msg
+               out.writeObject(encrypted_msg);
+               out.flush();
+            
+            
+            }while(in!=null);
             //close everything
-            ois.close();
-            oos.close();
+            in.close();
+            out.close();
             cs.close();
             
             
@@ -86,6 +110,21 @@ public class MyServerObject {
          }
          catch(ClassNotFoundException cnfe){
             
+         }
+         catch(NoSuchAlgorithmException nsae){
+            System.out.println("Say something");
+         }
+         catch(NoSuchPaddingException nspe){
+            System.out.println("Say something");
+         }
+         catch(InvalidKeyException ivke){
+            System.out.println("Say something");
+         }
+         catch(IllegalBlockSizeException ibse){
+            System.out.println("Say something");
+         }
+         catch(BadPaddingException bpe){
+            System.out.println("Say something");
          }
          
       

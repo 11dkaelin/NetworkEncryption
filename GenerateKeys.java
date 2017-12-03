@@ -1,5 +1,3 @@
-//package com.mkyong.keypair;
-
 import java.io.*;
 import java.security.*;
 
@@ -28,21 +26,4 @@ public class GenerateKeys {
 	public PublicKey getPublicKey() {
 		return this.publicKey;
 	}
-
-
-// 	public static void main(String[] args) {
-// 		GenerateKeys gk;
-// 		try {
-// 			gk = new GenerateKeys(1024);
-// 			gk.createKeys();
-// 			gk.writeToFile("KeyPair/publicKey", gk.getPublicKey().getEncoded());
-// 			gk.writeToFile("KeyPair/privateKey", gk.getPrivateKey().getEncoded());
-// 		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-// 			System.err.println(e.getMessage());
-// 		} catch (IOException e) {
-// 			System.err.println(e.getMessage());
-// 		}
-// 
-// 	}
-
 }
