@@ -4,6 +4,12 @@ import java.security.*;
 import javax.swing.*;
 import javax.crypto.*;
 
+/**
+*Douglas Kaelin
+*HW 9 Research
+*this is the client object for the encryption example
+@author dek4204
+*/
 
 public class MyClientObject{
    private PrivateKey privateKey;

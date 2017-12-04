@@ -4,6 +4,12 @@ import java.security.*;
 import javax.swing.*;
 import javax.crypto.*;
 
+/**
+*Douglas Kaelin
+*HW 9 Research
+*This is the object server for the example encryption
+@author dek4204
+*/
 
 public class MyServerObject {
    private PrivateKey privateKey;

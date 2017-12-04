@@ -5,7 +5,12 @@ import javax.swing.*;
 import javax.crypto.*;
 import java.util.*;
 
+/**
+*Douglas Kaelin
+*HW 9 Research
 
+@author dek4204
+*/
 
 public class tester{
    public static void main(String[] args)throws Exception{
